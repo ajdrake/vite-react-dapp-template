@@ -20,7 +20,7 @@
     "check-translations": "node ./scripts/check-translations.cjs",
     "release": "node ./scripts/bump-version.cjs",
     "prepare": "husky",
-    "start": "vite preview --port 8080"
+    "start": "vite preview --port 4173 --host"
   },
   "dependencies": {
     "@mantine/core": "^7.15.2",

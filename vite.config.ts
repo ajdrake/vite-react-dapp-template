@@ -5,6 +5,16 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  server: {
+    port: 3000, // Use the correct port
+    strictPort: true,
+    host: "0.0.0.0", // Bind to all interfaces
+  },
+  preview: {
+    port: 4173,
+    strictPort: true,
+    host: "0.0.0.0",
+  },
   build: {
     outDir: 'build',
     sourcemap: false,
