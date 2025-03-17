@@ -16,7 +16,8 @@ export default defineConfig({
     host: "0.0.0.0",
   },
   build: {
-    outDir: 'build',
+    outDir: "dist", 
+    emptyOutDir: true,
     sourcemap: false,
     modulePreload: {
       resolveDependencies: (_url, _deps, _context) => {
