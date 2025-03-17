@@ -19,7 +19,8 @@
     "extract": "i18next 'src/**/*.{ts,tsx}'",
     "check-translations": "node ./scripts/check-translations.cjs",
     "release": "node ./scripts/bump-version.cjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "start": "vite preview --port 8080"
   },
   "dependencies": {
     "@mantine/core": "^7.15.2",
