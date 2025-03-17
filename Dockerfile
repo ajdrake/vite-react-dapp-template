@@ -8,17 +8,22 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 
-# Copy source code and build the React app
+# Copy the rest of the app
 COPY . .
-RUN npm run build
+
+# Ensure the build folder is created
+RUN npm run build && ls -la /app/dist
 
 # Serve Stage (Final Image)
 FROM nginx:alpine
 
-# Remove default Nginx index page
+# Create directory if it does not exist (Kaniko fix)
+RUN mkdir -p /usr/share/nginx/html
+
+# Remove default Nginx index page (if needed)
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built files from the previous stage
+# Copy built files from previous stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expose port 80 for HTTP traffic
