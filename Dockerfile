@@ -4,30 +4,30 @@ FROM node:18-alpine AS build
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy package.json and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 
-# Copy the rest of the app
+# Copy the rest of the application
 COPY . .
 
-# Ensure the build folder is created
+# Build the React app
 RUN npm run build && ls -la /app/dist
 
-# Serve Stage (Final Image)
+# Serve Stage
 FROM nginx:alpine
 
-# Create directory if it does not exist (Kaniko fix)
-RUN mkdir -p /usr/share/nginx/html
-
-# Remove default Nginx index page (if needed)
+# Remove default index page (fix potential conflicts)
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built files from previous stage
+# Copy built React app to Nginx public folder
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80 for HTTP traffic
+# Expose port 80 (this is what DigitalOcean expects)
 EXPOSE 80
+
+# Health Check (Ensures Nginx is running)
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost || exit 1
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
